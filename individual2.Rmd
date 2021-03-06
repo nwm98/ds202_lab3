@@ -7,11 +7,20 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
+install.packages('readxl')
+dat <- readxl::read_xls('Users/brown/OneDrive/Documents/ds202_lab3/GSS.xls')
+``` 
 
 1.Find the average years of education of he respondents with each marital status. Arrange your output in a meaningful order and print. Describe any patterns you find. 
+``` {r} 
+a<- dat$`Marital status` %>% factor
+b<- as.numeric(dat$`Highest year of school completed`)
 
-  Answer:
+ggplot(dat, aes(x=a, y=b))+geom_boxplot()
+
+```
+
+  Answer: From this boxplot we can see that there is a trend that seperated and widowed individuals tend to have lower amounts education.
 
 2.Create a single data frame containing records for the better educated respondents with each marital status. A "better educated" respondent is someone who has strictly more years of education than the average among those with the same marital status. Print the structure of the data frame. 
 
@@ -21,16 +30,22 @@ knitr::opts_chunk$set(echo = TRUE)
 
 3.How is the happiness of a respondent related to his/her marriage status? Define that a person is happy if the resonse to question is "Very happy" or "Pretty happy".
 
-  Answer:
+  Answer: Married individuals appear to have a much greater presence in the happy categories while the other marital statuses didn't display much of a pattern anywhere else. Certainly married individuals are more likely to be happy than others. 
 
 4.Does party affiliation affect the relationship you found in the last question?
 
-  Answer:
+  Answer: Party affiliation doesn't appear to have an effect on marital status. 
 
 5.How is marital status related to the education of a respondent? What are possible reasons accounting for the patterns you see?
 
-  Answer:
-
+  Answer: Divorced and never married individuals have a higher average amount of education than the rest, while 20 years of education is not considered an outlier or uncommon for married and never married individuals. 
+  
 6.Explore two more interesting questions, and answer those questions using the GSS data. 
 
-  Answer:
+  Answer: happiness of people before 2000 v happiness of people after 2000
+  
+  
+  
+  number of hours spouse works a week before 2000 v after 2000
+  
+  
