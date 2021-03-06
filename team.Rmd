@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #install.packages('readxl')
 library(dplyr)
 library(ggplot2)
-dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+dat <- readxl::read_xls('/Users/nathanmarquardt/Desktop/ds202_lab3/GSS.xls')
 
 names(dat)
 dat <- rename(dat, Year = `Gss year for this respondent`)
@@ -113,6 +113,7 @@ MS_Years <- dat %>%
 
 ggplot(MS_Years, aes(x=Marital_Status, weight=avgYears, fill=Marital_Status)) + geom_bar() + ggtitle("Average Years of School per Marital Status") + xlab("Marital Status") + ylab("Years of School Completed")
 ```
+ 
   Noting the average charts, it appears that the Separated and Widowed recipients had the least Years of school completed on average. The higest consisted of the Never Married group, followed closely by Divorced and Married.
   
   
@@ -120,10 +121,10 @@ ggplot(MS_Years, aes(x=Marital_Status, weight=avgYears, fill=Marital_Status)) + 
 
   Answer:
   ```{r}
-install.packages('readxl')
+#install.packages('readxl')
 library(dplyr)
 library(ggplot2)
-dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+dat <- readxl::read_xls('/Users/nathanmarquardt/Desktop/ds202_lab3/GSS.xls')
 
 names(dat)
 dat <- rename(dat, Year = `Gss year for this respondent`)
@@ -232,10 +233,10 @@ str(abveAvgData)
 
   Answer:
   ```{r}
-install.packages('readxl')
+#install.packages('readxl')
 library(dplyr)
 library(ggplot2)
-dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+dat <- readxl::read_xls('/Users/nathanmarquardt/Desktop/ds202_lab3/GSS.xls')
 
 names(dat)
 dat <- rename(dat, Year = `Gss year for this respondent`)
@@ -348,16 +349,17 @@ table(wdwData$Happiness)
 #Table for Separated Data
 table(sepData$Happiness)
 ```
-Married individuals appear to have a much greater presence in the happy category. Based off of this data married individuals certainly are more likely to be happy than others. Marital status aside, the vast majority of respondents are happy. There does seem to be a pattern regardless of happiness, going from highest to lowest is married, never married, divorced, widowed, and separated. Based off of the tables we can see that the amount of people who are Pretty Happy always are much higher than very happy or not too happy. For most of the marital statuses very happy was only slightly different than not too happy, but since Pretty Happy and Very Happy are defined together as happy then it is clear from the tables that the majority of people are happy no matter what their marital status is.
+
+ Married individuals appear to have a much greater presence in the happy category. Based off of this data married individuals certainly are more likely to be happy than others. Marital status aside, the vast majority of respondents are happy. There does seem to be a pattern regardless of happiness, going from highest to lowest is married, never married, divorced, widowed, and separated. Based off of the tables we can see that the amount of people who are Pretty Happy always are much higher than very happy or not too happy. For most of the marital statuses very happy was only slightly different than not too happy, but since Pretty Happy and Very Happy are defined together as happy then it is clear from the tables that the majority of people are happy no matter what their marital status is.
 
 4.Does party affiliation affect the relationship you found in the last question?
 
   Answer:
   ```{r}
-install.packages('readxl')
+#install.packages('readxl')
 library(dplyr)
 library(ggplot2)
-dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+dat <- readxl::read_xls('/Users/nathanmarquardt/Desktop/ds202_lab3/GSS.xls')
 
 names(dat)
 dat <- rename(dat, Year = `Gss year for this respondent`)
@@ -475,17 +477,18 @@ table(wdwData$Politic_Party)
 table(sepData$Happiness)
 table(sepData$Politic_Party)
 ```
-Judging from the facet grid, the happy people tend to hold the same pattern as the previous question, however there is a slight difference for the not too happy people. The never married indidviduals who are not too happy have a higher affinity towards the independent/ind near rep/ind near dem categories. Based off of the graph we can say that all people that are happy appear to be in abundance in not strong rep and not strong dem. According to the data tables, married, divorced, never married and separated people tend to be happy and not strong democrat. We noticed that the widowed individuals are happy and strong democrats.
+
+ Judging from the facet grid, the happy people tend to hold the same pattern as the previous question, however there is a slight difference for the not too happy people. The never married indidviduals who are not too happy have a higher affinity towards the independent/ind near rep/ind near dem categories. Based off of the graph we can say that all people that are happy appear to be in abundance in not strong rep and not strong dem. According to the data tables, married, divorced, never married and separated people tend to be happy and not strong democrat. We noticed that the widowed individuals are happy and strong democrats.
 
 
 5.How is marital status related to the education of a respondent? What are possible reasons accounting for the patterns you see?
 
   Answer:
   ```{r}
-  install.packages('readxl')
+  #install.packages('readxl')
 library(dplyr)
 library(ggplot2)
-dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+dat <- readxl::read_xls('/Users/nathanmarquardt/Desktop/ds202_lab3/GSS.xls')
 
 names(dat)
 dat <- rename(dat, Year = `Gss year for this respondent`)
@@ -611,7 +614,7 @@ unique(dat$R_LaborStatus)
 ggplot(dat, aes(x=Marital_Status, y=as.numeric(School_Years), color=Marital_Status)) + geom_boxplot() + ggtitle("Boxplot of School Years by Marital Status") + xlab("Marital Status") + ylab("Years of School Completed") + facet_wrap(~R_LaborStatus) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-Never married and divorced individuals have a higher average amount of education respectively than the rest, while the highest amount of education (20 years) is not considered an outlier or uncommon for married and never married individuals. Noting the average charts, it appears that the Separated and Widowed recipients had the least Years of school completed on average. Looking at the facet wrap boxplot we can see that the occupation statuses that typically depend less on amount of schooling, have outliers in the upper echelons of schooling meaning that it is less common. The statuses that depend more on schooling have little to no outliers in the upper parts but have many in the lower parts. Job statuses that depend less on education would be keeping house, unemployed and other, while statuses that depend more would be Working full time and part time.
+ Never married and divorced individuals have a higher average amount of education respectively than the rest, while the highest amount of education (20 years) is not considered an outlier or uncommon for married and never married individuals. Noting the average charts, it appears that the Separated and Widowed recipients had the least Years of school completed on average. Looking at the facet wrap boxplot we can see that the occupation statuses that typically depend less on amount of schooling, have outliers in the upper echelons of schooling meaning that it is less common. The statuses that depend more on schooling have little to no outliers in the upper parts but have many in the lower parts. Job statuses that depend less on education would be keeping house, unemployed and other, while statuses that depend more would be Working full time and part time.
 
 6.Explore two more interesting questions, and answer those questions using the GSS data. 
 
@@ -620,10 +623,10 @@ Never married and divorced individuals have a higher average amount of education
   1. Were recipients happier before 2000 or after 2000?
   
   ```{r}
-  install.packages('readxl')
+  #install.packages('readxl')
 library(dplyr)
 library(ggplot2)
-dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+dat <- readxl::read_xls('/Users/nathanmarquardt/Desktop/ds202_lab3/GSS.xls')
 
 names(dat)
 dat <- rename(dat, Year = `Gss year for this respondent`)
@@ -751,15 +754,16 @@ lbls2 <- c("Recipients 73-99", "Recipients 00-18")
 
 pie(slices2, labels = lbls2, main = "Pie Chart of Total Recipients")
 ```
+  
   The barplots show that happiness exhibits the same distribution regardless of the time frame, Pretty Happy being the highest and Not Too Happy being the lowest. From our definition from question 3 we can conclude that the vast majority of people are happy no matter what time they were in. However based off of the pie charts we can see that the amount of recipients before 2000 is more than half of the total. The pie chart shows as well that Pretty Happy was the most populated category for both times.
   
   2. Is Happiness impacted by the recipient's type of employment?
   
   ```{r}
-  install.packages('readxl')
+ # install.packages('readxl')
 library(dplyr)
 library(ggplot2)
-dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+dat <- readxl::read_xls('/Users/nathanmarquardt/Desktop/ds202_lab3/GSS.xls')
 
 names(dat)
 dat <- rename(dat, Year = `Gss year for this respondent`)
@@ -866,4 +870,5 @@ lbls3 <- c("Keeping House", "Other", "Retired", "School", "Temp Not Working", "U
 
 pie(slices3, labels = lbls3, main = "Total Recipients by Labor Status")
 ```
-Based off of the facet bar graphs, we can conclude that as long as people were doing some kind of work, they were significantly more happy than not happy. Respondents in Other, School, Temp, and Unemployed showed little difference between happy and not happy. Working Full Time comprised of 50% of the population, which explains why the majority of people were happy.
+
+ Based off of the facet bar graphs, we can conclude that as long as people were doing some kind of work, they were significantly more happy than not happy. Respondents in Other, School, Temp, and Unemployed showed little difference between happy and not happy. Working Full Time comprised of 50% of the population, which explains why the majority of people were happy.
