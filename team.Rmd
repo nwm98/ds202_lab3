@@ -12,25 +12,858 @@ knitr::opts_chunk$set(echo = TRUE)
 1.Find the average years of education of he respondents with each marital status. Arrange your output in a meaningful order and print. Describe any patterns you find. 
 
   Answer:
+  ```{r}
+#install.packages('readxl')
+library(dplyr)
+library(ggplot2)
+dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
 
+names(dat)
+dat <- rename(dat, Year = `Gss year for this respondent`)
+dat <- rename(dat, Happiness = `General happiness`)
+dat <- rename(dat, Politic_Party = `Political party affiliation`)
+dat <- rename(dat, FamIncome = `Total family income` )
+dat <- rename(dat, Sex = `Respondents sex`)
+dat <- rename(dat, School_Years = `Highest year of school completed`)
+dat <- rename(dat, Spouse_EmpType = `Spouse self-emp. or works for somebody`)
+dat <- rename(dat, Spouse_AvgHours = `No. of hrs spouse usually works a week`)
+dat <- rename(dat, Spouse_LWHours = `Number of hrs spouse worked last week`)
+dat <- rename(dat, Spouse_LaborStatus = `Spouse labor force status`)
+dat <- rename(dat, Div_Sep_Status = `Ever been divorced or separated`)
+dat <- rename(dat, Marital_Status = `Marital status`)
+dat <- rename(dat, R_EmpType = `R self-emp or works for somebody`)
+dat <- rename(dat, R_AvgHours = `Number of hours usually work a week`)
+dat <- rename(dat, R_LWHours = `Number of hours worked last week`)
+dat <- rename(dat, R_LaborStatus = `Labor force status`)
+dat <- rename(dat, R_ID = `Respondent id number`)
+dat <- rename(dat, Ballot_Type = `Ballot used for interview`)
+
+unique(dat$Year)
+dat <- filter(dat, Year != "NA")
+
+unique(dat$Happiness)
+dat <- filter(dat, Happiness != "No answer")
+dat <- filter(dat, Happiness != "Don't know")
+dat <- filter(dat, Happiness != "Not applicable")
+
+unique(dat$Politic_Party)
+dat <- filter(dat, Politic_Party != "No answer")
+dat <- filter(dat, Politic_Party != "Don't know")
+
+unique(dat$FamIncome)
+dat <- filter(dat, FamIncome != "No answer")
+dat <- filter(dat, FamIncome != "Not applicable")
+dat <- filter(dat, FamIncome != "Don't know")
+dat <- filter(dat, FamIncome != "Refused")
+
+unique(dat$Sex)
+
+unique(dat$School_Years)
+dat <- filter(dat, School_Years != "No answer")
+dat <- filter(dat, School_Years != "Don't know")
+
+unique(dat$Div_Sep_Status)
+dat <- filter(dat, Div_Sep_Status != "No answer")
+#dat <- filter(dat, Div_Sep_Status != "Not applicable")
+dat <- filter(dat, Div_Sep_Status != "Don't know")
+
+unique(dat$Marital_Status)
+
+unique(dat$R_EmpType)
+dat <- filter(dat, R_EmpType != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_EmpType != "Don't know")
+
+unique(dat$R_AvgHours)
+dat <- filter(dat, R_AvgHours != "No answer")
+#dat <- filter(dat, R_AvgHours != "Not applicable")
+dat <- filter(dat, R_AvgHours != "Don't know")
+
+unique(dat$R_LWHours)
+dat <- filter(dat, R_LWHours != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_LWHours != "Don't know")
+
+unique(dat$R_LaborStatus)
+
+unique(dat$Spouse_EmpType)
+dat <- filter(dat, Spouse_EmpType != "No answer")
+#dat <- filter(dat, Spouse_EmpType != "Not applicable")
+dat <- filter(dat, Spouse_EmpType != "Don't know")
+
+unique(dat$Spouse_AvgHours)
+dat <- filter(dat, Spouse_AvgHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_AvgHours != "Don't know")
+
+unique(dat$Spouse_LWHours)
+dat <- filter(dat, Spouse_LWHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_LWHours != "Don't know")
+
+unique(dat$Spouse_LaborStatus)
+
+#Finally Clean Data
+#sch_yrs <- as.numeric(dat$School_Years)
+
+MS_Years <- dat %>%
+  mutate(school_yrs = as.numeric(dat$School_Years)) %>%
+  group_by(Marital_Status) %>%
+  summarize(count = n(), avgYears = mean(school_yrs))
+
+ggplot(MS_Years, aes(x=Marital_Status, weight=avgYears, fill=Marital_Status)) + geom_bar() + ggtitle("Average Years of School per Marital Status") + xlab("Marital Status") + ylab("Years of School Completed")
+```
+  Noting the average charts, it appears that the Separated and Widowed recipients had the least Years of school completed on average. The higest consisted of the Never Married group, followed closely by Divorced and Married.
+  
+  
 2.Create a single data frame containing records for the better educated respondents with each marital status. A "better educated" respondent is someone who has strictly more years of education than the average among those with the same marital status. Print the structure of the data frame. 
 
   Answer:
-  
+  ```{r}
+install.packages('readxl')
+library(dplyr)
+library(ggplot2)
+dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+
+names(dat)
+dat <- rename(dat, Year = `Gss year for this respondent`)
+dat <- rename(dat, Happiness = `General happiness`)
+dat <- rename(dat, Politic_Party = `Political party affiliation`)
+dat <- rename(dat, FamIncome = `Total family income` )
+dat <- rename(dat, Sex = `Respondents sex`)
+dat <- rename(dat, School_Years = `Highest year of school completed`)
+dat <- rename(dat, Spouse_EmpType = `Spouse self-emp. or works for somebody`)
+dat <- rename(dat, Spouse_AvgHours = `No. of hrs spouse usually works a week`)
+dat <- rename(dat, Spouse_LWHours = `Number of hrs spouse worked last week`)
+dat <- rename(dat, Spouse_LaborStatus = `Spouse labor force status`)
+dat <- rename(dat, Div_Sep_Status = `Ever been divorced or separated`)
+dat <- rename(dat, Marital_Status = `Marital status`)
+dat <- rename(dat, R_EmpType = `R self-emp or works for somebody`)
+dat <- rename(dat, R_AvgHours = `Number of hours usually work a week`)
+dat <- rename(dat, R_LWHours = `Number of hours worked last week`)
+dat <- rename(dat, R_LaborStatus = `Labor force status`)
+dat <- rename(dat, R_ID = `Respondent id number`)
+dat <- rename(dat, Ballot_Type = `Ballot used for interview`)
+
+unique(dat$Year)
+dat <- filter(dat, Year != "NA")
+
+unique(dat$Happiness)
+dat <- filter(dat, Happiness != "No answer")
+dat <- filter(dat, Happiness != "Don't know")
+dat <- filter(dat, Happiness != "Not applicable")
+
+unique(dat$Politic_Party)
+dat <- filter(dat, Politic_Party != "No answer")
+dat <- filter(dat, Politic_Party != "Don't know")
+
+unique(dat$FamIncome)
+dat <- filter(dat, FamIncome != "No answer")
+dat <- filter(dat, FamIncome != "Not applicable")
+dat <- filter(dat, FamIncome != "Don't know")
+dat <- filter(dat, FamIncome != "Refused")
+
+unique(dat$Sex)
+
+unique(dat$School_Years)
+dat <- filter(dat, School_Years != "No answer")
+dat <- filter(dat, School_Years != "Don't know")
+
+unique(dat$Div_Sep_Status)
+dat <- filter(dat, Div_Sep_Status != "No answer")
+#dat <- filter(dat, Div_Sep_Status != "Not applicable")
+dat <- filter(dat, Div_Sep_Status != "Don't know")
+
+unique(dat$Marital_Status)
+
+unique(dat$R_EmpType)
+dat <- filter(dat, R_EmpType != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_EmpType != "Don't know")
+
+unique(dat$R_AvgHours)
+dat <- filter(dat, R_AvgHours != "No answer")
+#dat <- filter(dat, R_AvgHours != "Not applicable")
+dat <- filter(dat, R_AvgHours != "Don't know")
+
+unique(dat$R_LWHours)
+dat <- filter(dat, R_LWHours != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_LWHours != "Don't know")
+
+unique(dat$R_LaborStatus)
+
+unique(dat$Spouse_EmpType)
+dat <- filter(dat, Spouse_EmpType != "No answer")
+#dat <- filter(dat, Spouse_EmpType != "Not applicable")
+dat <- filter(dat, Spouse_EmpType != "Don't know")
+
+unique(dat$Spouse_AvgHours)
+dat <- filter(dat, Spouse_AvgHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_AvgHours != "Don't know")
+
+unique(dat$Spouse_LWHours)
+dat <- filter(dat, Spouse_LWHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_LWHours != "Don't know")
+
+unique(dat$Spouse_LaborStatus)
+
+#Finally Clean Data
+#sch_yrs <- as.numeric(dat$School_Years)
+dat <- mutate(dat, sch_yrs_num = as.numeric(School_Years))
+
+abveAvgDivDat <- filter(dat, (Marital_Status == "Divorced" & sch_yrs_num > 13.12685)) 
+abveAvgMarDat <- filter(dat, (Marital_Status == "Married" & sch_yrs_num > 12.99896))  
+abveAvgNvmDat <- filter(dat, (Marital_Status == "Never married" & sch_yrs_num > 13.47385))  
+abveAvgSepDat <- filter(dat, (Marital_Status == "Separated" & sch_yrs_num > 11.91914)) 
+abveAvgWdwDat <- filter(dat, (Marital_Status == "Widowed" & sch_yrs_num > 11.23538))
+
+abveAvgData <- rbind(abveAvgDivDat, abveAvgMarDat, abveAvgNvmDat, abveAvgSepDat, abveAvgWdwDat)
+
+?str
+str(abveAvgData)
+```
+
 **For each of the investigation below, create at least one nemerical summary and one appropriate visualization. Write a paragraph to describe your findings and the variables you used.**
 
 3.How is the happiness of a respondent related to his/her marriage status? Define that a person is happy if the resonse to question is "Very happy" or "Pretty happy".
 
   Answer:
+  ```{r}
+install.packages('readxl')
+library(dplyr)
+library(ggplot2)
+dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+
+names(dat)
+dat <- rename(dat, Year = `Gss year for this respondent`)
+dat <- rename(dat, Happiness = `General happiness`)
+dat <- rename(dat, Politic_Party = `Political party affiliation`)
+dat <- rename(dat, FamIncome = `Total family income` )
+dat <- rename(dat, Sex = `Respondents sex`)
+dat <- rename(dat, School_Years = `Highest year of school completed`)
+dat <- rename(dat, Spouse_EmpType = `Spouse self-emp. or works for somebody`)
+dat <- rename(dat, Spouse_AvgHours = `No. of hrs spouse usually works a week`)
+dat <- rename(dat, Spouse_LWHours = `Number of hrs spouse worked last week`)
+dat <- rename(dat, Spouse_LaborStatus = `Spouse labor force status`)
+dat <- rename(dat, Div_Sep_Status = `Ever been divorced or separated`)
+dat <- rename(dat, Marital_Status = `Marital status`)
+dat <- rename(dat, R_EmpType = `R self-emp or works for somebody`)
+dat <- rename(dat, R_AvgHours = `Number of hours usually work a week`)
+dat <- rename(dat, R_LWHours = `Number of hours worked last week`)
+dat <- rename(dat, R_LaborStatus = `Labor force status`)
+dat <- rename(dat, R_ID = `Respondent id number`)
+dat <- rename(dat, Ballot_Type = `Ballot used for interview`)
+
+unique(dat$Year)
+dat <- filter(dat, Year != "NA")
+
+unique(dat$Happiness)
+dat <- filter(dat, Happiness != "No answer")
+dat <- filter(dat, Happiness != "Don't know")
+dat <- filter(dat, Happiness != "Not applicable")
+
+unique(dat$Politic_Party)
+dat <- filter(dat, Politic_Party != "No answer")
+dat <- filter(dat, Politic_Party != "Don't know")
+
+unique(dat$FamIncome)
+dat <- filter(dat, FamIncome != "No answer")
+dat <- filter(dat, FamIncome != "Not applicable")
+dat <- filter(dat, FamIncome != "Don't know")
+dat <- filter(dat, FamIncome != "Refused")
+
+unique(dat$Sex)
+
+unique(dat$School_Years)
+dat <- filter(dat, School_Years != "No answer")
+dat <- filter(dat, School_Years != "Don't know")
+
+unique(dat$Div_Sep_Status)
+dat <- filter(dat, Div_Sep_Status != "No answer")
+#dat <- filter(dat, Div_Sep_Status != "Not applicable")
+dat <- filter(dat, Div_Sep_Status != "Don't know")
+
+unique(dat$Marital_Status)
+
+unique(dat$R_EmpType)
+dat <- filter(dat, R_EmpType != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_EmpType != "Don't know")
+
+unique(dat$R_AvgHours)
+dat <- filter(dat, R_AvgHours != "No answer")
+#dat <- filter(dat, R_AvgHours != "Not applicable")
+dat <- filter(dat, R_AvgHours != "Don't know")
+
+unique(dat$R_LWHours)
+dat <- filter(dat, R_LWHours != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_LWHours != "Don't know")
+
+unique(dat$R_LaborStatus)
+
+unique(dat$Spouse_EmpType)
+dat <- filter(dat, Spouse_EmpType != "No answer")
+#dat <- filter(dat, Spouse_EmpType != "Not applicable")
+dat <- filter(dat, Spouse_EmpType != "Don't know")
+
+unique(dat$Spouse_AvgHours)
+dat <- filter(dat, Spouse_AvgHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_AvgHours != "Don't know")
+
+unique(dat$Spouse_LWHours)
+dat <- filter(dat, Spouse_LWHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_LWHours != "Don't know")
+
+unique(dat$Spouse_LaborStatus)
+
+#Finally Clean Data
+
+ggplot(dat, aes(x=Marital_Status, weight=length(Marital_Status), color=Marital_Status)) + geom_bar() + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + facet_wrap(~ Happiness) + ggtitle("Happiness Rating by Marital Status") + xlab("Marital Status") + ylab("# of Recipients")
+
+unique(dat$Marital_Status)
+marData <- filter(dat, Marital_Status == "Married")
+divData <- filter(dat, Marital_Status == "Divorced")
+nvmData <- filter(dat, Marital_Status == "Never married")
+wdwData <- filter(dat, Marital_Status == "Widowed")
+sepData <- filter(dat, Marital_Status == "Separated")
+
+#Table for Married Data
+table(marData$Happiness)
+
+#Table for Divorced Data
+table(divData$Happiness)
+
+#Table for Never Married Data
+table(nvmData$Happiness)
+
+#Table for Widowed Data
+table(wdwData$Happiness)
+
+#Table for Separated Data
+table(sepData$Happiness)
+```
+INSERT PARAGRAPH HERE
 
 4.Does party affiliation affect the relationship you found in the last question?
 
   Answer:
+  ```{r}
+install.packages('readxl')
+library(dplyr)
+library(ggplot2)
+dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+
+names(dat)
+dat <- rename(dat, Year = `Gss year for this respondent`)
+dat <- rename(dat, Happiness = `General happiness`)
+dat <- rename(dat, Politic_Party = `Political party affiliation`)
+dat <- rename(dat, FamIncome = `Total family income` )
+dat <- rename(dat, Sex = `Respondents sex`)
+dat <- rename(dat, School_Years = `Highest year of school completed`)
+dat <- rename(dat, Spouse_EmpType = `Spouse self-emp. or works for somebody`)
+dat <- rename(dat, Spouse_AvgHours = `No. of hrs spouse usually works a week`)
+dat <- rename(dat, Spouse_LWHours = `Number of hrs spouse worked last week`)
+dat <- rename(dat, Spouse_LaborStatus = `Spouse labor force status`)
+dat <- rename(dat, Div_Sep_Status = `Ever been divorced or separated`)
+dat <- rename(dat, Marital_Status = `Marital status`)
+dat <- rename(dat, R_EmpType = `R self-emp or works for somebody`)
+dat <- rename(dat, R_AvgHours = `Number of hours usually work a week`)
+dat <- rename(dat, R_LWHours = `Number of hours worked last week`)
+dat <- rename(dat, R_LaborStatus = `Labor force status`)
+dat <- rename(dat, R_ID = `Respondent id number`)
+dat <- rename(dat, Ballot_Type = `Ballot used for interview`)
+
+unique(dat$Year)
+dat <- filter(dat, Year != "NA")
+
+unique(dat$Happiness)
+dat <- filter(dat, Happiness != "No answer")
+dat <- filter(dat, Happiness != "Don't know")
+dat <- filter(dat, Happiness != "Not applicable")
+
+unique(dat$Politic_Party)
+dat <- filter(dat, Politic_Party != "No answer")
+dat <- filter(dat, Politic_Party != "Don't know")
+
+unique(dat$FamIncome)
+dat <- filter(dat, FamIncome != "No answer")
+dat <- filter(dat, FamIncome != "Not applicable")
+dat <- filter(dat, FamIncome != "Don't know")
+dat <- filter(dat, FamIncome != "Refused")
+
+unique(dat$Sex)
+
+unique(dat$School_Years)
+dat <- filter(dat, School_Years != "No answer")
+dat <- filter(dat, School_Years != "Don't know")
+
+unique(dat$Div_Sep_Status)
+dat <- filter(dat, Div_Sep_Status != "No answer")
+#dat <- filter(dat, Div_Sep_Status != "Not applicable")
+dat <- filter(dat, Div_Sep_Status != "Don't know")
+
+unique(dat$Marital_Status)
+
+unique(dat$R_EmpType)
+dat <- filter(dat, R_EmpType != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_EmpType != "Don't know")
+
+unique(dat$R_AvgHours)
+dat <- filter(dat, R_AvgHours != "No answer")
+#dat <- filter(dat, R_AvgHours != "Not applicable")
+dat <- filter(dat, R_AvgHours != "Don't know")
+
+unique(dat$R_LWHours)
+dat <- filter(dat, R_LWHours != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_LWHours != "Don't know")
+
+unique(dat$R_LaborStatus)
+
+unique(dat$Spouse_EmpType)
+dat <- filter(dat, Spouse_EmpType != "No answer")
+#dat <- filter(dat, Spouse_EmpType != "Not applicable")
+dat <- filter(dat, Spouse_EmpType != "Don't know")
+
+unique(dat$Spouse_AvgHours)
+dat <- filter(dat, Spouse_AvgHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_AvgHours != "Don't know")
+
+unique(dat$Spouse_LWHours)
+dat <- filter(dat, Spouse_LWHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_LWHours != "Don't know")
+
+unique(dat$Spouse_LaborStatus)
+
+#Finally Clean Data
+
+ggplot(dat, aes(x=Marital_Status, weight=length(Marital_Status), color=Marital_Status)) + geom_bar() + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + facet_grid(Politic_Party ~ Happiness) + ggtitle("Happiness Rating by Marital Status and Political Affiliation") + xlab("Marital Status") + ylab("# of Recipients")
+
+unique(dat$Marital_Status)
+marData <- filter(dat, Marital_Status == "Married")
+divData <- filter(dat, Marital_Status == "Divorced")
+nvmData <- filter(dat, Marital_Status == "Never married")
+wdwData <- filter(dat, Marital_Status == "Widowed")
+sepData <- filter(dat, Marital_Status == "Separated")
+
+#Tables for Married Data
+table(marData$Happiness)
+table(marData$Politic_Party)
+
+#Table for Divorced Data
+table(divData$Happiness)
+table(divData$Politic_Party)
+
+#Table for Never Married Data
+table(nvmData$Happiness)
+table(nvmData$Politic_Party)
+
+#Table for Widowed Data
+table(wdwData$Happiness)
+table(wdwData$Politic_Party)
+
+#Table for Separated Data
+table(sepData$Happiness)
+table(sepData$Politic_Party)
+```
+INSERT PARAGRAPH HERE
+
 
 5.How is marital status related to the education of a respondent? What are possible reasons accounting for the patterns you see?
 
   Answer:
+  ```{r}
+  install.packages('readxl')
+library(dplyr)
+library(ggplot2)
+dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+
+names(dat)
+dat <- rename(dat, Year = `Gss year for this respondent`)
+dat <- rename(dat, Happiness = `General happiness`)
+dat <- rename(dat, Politic_Party = `Political party affiliation`)
+dat <- rename(dat, FamIncome = `Total family income` )
+dat <- rename(dat, Sex = `Respondents sex`)
+dat <- rename(dat, School_Years = `Highest year of school completed`)
+dat <- rename(dat, Spouse_EmpType = `Spouse self-emp. or works for somebody`)
+dat <- rename(dat, Spouse_AvgHours = `No. of hrs spouse usually works a week`)
+dat <- rename(dat, Spouse_LWHours = `Number of hrs spouse worked last week`)
+dat <- rename(dat, Spouse_LaborStatus = `Spouse labor force status`)
+dat <- rename(dat, Div_Sep_Status = `Ever been divorced or separated`)
+dat <- rename(dat, Marital_Status = `Marital status`)
+dat <- rename(dat, R_EmpType = `R self-emp or works for somebody`)
+dat <- rename(dat, R_AvgHours = `Number of hours usually work a week`)
+dat <- rename(dat, R_LWHours = `Number of hours worked last week`)
+dat <- rename(dat, R_LaborStatus = `Labor force status`)
+dat <- rename(dat, R_ID = `Respondent id number`)
+dat <- rename(dat, Ballot_Type = `Ballot used for interview`)
+
+unique(dat$Year)
+dat <- filter(dat, Year != "NA")
+
+unique(dat$Happiness)
+dat <- filter(dat, Happiness != "No answer")
+dat <- filter(dat, Happiness != "Don't know")
+dat <- filter(dat, Happiness != "Not applicable")
+
+unique(dat$Politic_Party)
+dat <- filter(dat, Politic_Party != "No answer")
+dat <- filter(dat, Politic_Party != "Don't know")
+
+unique(dat$FamIncome)
+dat <- filter(dat, FamIncome != "No answer")
+dat <- filter(dat, FamIncome != "Not applicable")
+dat <- filter(dat, FamIncome != "Don't know")
+dat <- filter(dat, FamIncome != "Refused")
+
+unique(dat$Sex)
+
+unique(dat$School_Years)
+dat <- filter(dat, School_Years != "No answer")
+dat <- filter(dat, School_Years != "Don't know")
+
+unique(dat$Div_Sep_Status)
+dat <- filter(dat, Div_Sep_Status != "No answer")
+#dat <- filter(dat, Div_Sep_Status != "Not applicable")
+dat <- filter(dat, Div_Sep_Status != "Don't know")
+
+unique(dat$Marital_Status)
+
+unique(dat$R_EmpType)
+dat <- filter(dat, R_EmpType != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_EmpType != "Don't know")
+
+unique(dat$R_AvgHours)
+dat <- filter(dat, R_AvgHours != "No answer")
+#dat <- filter(dat, R_AvgHours != "Not applicable")
+dat <- filter(dat, R_AvgHours != "Don't know")
+
+unique(dat$R_LWHours)
+dat <- filter(dat, R_LWHours != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_LWHours != "Don't know")
+
+unique(dat$R_LaborStatus)
+
+unique(dat$Spouse_EmpType)
+dat <- filter(dat, Spouse_EmpType != "No answer")
+#dat <- filter(dat, Spouse_EmpType != "Not applicable")
+dat <- filter(dat, Spouse_EmpType != "Don't know")
+
+unique(dat$Spouse_AvgHours)
+dat <- filter(dat, Spouse_AvgHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_AvgHours != "Don't know")
+
+unique(dat$Spouse_LWHours)
+dat <- filter(dat, Spouse_LWHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_LWHours != "Don't know")
+
+unique(dat$Spouse_LaborStatus)
+
+#Finally Clean Data
+
+ggplot(dat, aes(x=Marital_Status, y=as.numeric(School_Years), color=Marital_Status)) + geom_boxplot() + ggtitle("Boxplot of School Years by Marital Status") + xlab("Marital Status") + ylab("Years of School Completed")
+
+unique(dat$Marital_Status)
+marData <- filter(dat, Marital_Status == "Married")
+divData <- filter(dat, Marital_Status == "Divorced")
+nvmData <- filter(dat, Marital_Status == "Never married")
+wdwData <- filter(dat, Marital_Status == "Widowed")
+sepData <- filter(dat, Marital_Status == "Separated")
+
+#Range for Married School Years
+range(as.numeric(marData$School_Years))
+
+#Range for Divorced School Years
+range(as.numeric(divData$School_Years))
+
+#Range for Never Married School Years
+range(as.numeric(nvmData$School_Years))
+
+#Range for Widowed School Years
+range(as.numeric(wdwData$School_Years))
+
+#Range for Separated School Years
+range(as.numeric(sepData$School_Years))
+
+MS_Years <- dat %>%
+  mutate(school_yrs = as.numeric(dat$School_Years)) %>%
+  group_by(Marital_Status) %>%
+  summarize(avgYears = mean(school_yrs))
+
+MS_Years
+
+
+unique(dat$R_LaborStatus)
+
+ggplot(dat, aes(x=Marital_Status, y=as.numeric(School_Years), color=Marital_Status)) + geom_boxplot() + ggtitle("Boxplot of School Years by Marital Status") + xlab("Marital Status") + ylab("Years of School Completed") + facet_wrap(~R_LaborStatus) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+INSERT PARAGRAPH HERE
 
 6.Explore two more interesting questions, and answer those questions using the GSS data. 
 
   Answer:
+  
+  1. Were recipients happier before 2000 or after 2000?
+  
+  ```{r}
+  install.packages('readxl')
+library(dplyr)
+library(ggplot2)
+dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+
+names(dat)
+dat <- rename(dat, Year = `Gss year for this respondent`)
+dat <- rename(dat, Happiness = `General happiness`)
+dat <- rename(dat, Politic_Party = `Political party affiliation`)
+dat <- rename(dat, FamIncome = `Total family income` )
+dat <- rename(dat, Sex = `Respondents sex`)
+dat <- rename(dat, School_Years = `Highest year of school completed`)
+dat <- rename(dat, Spouse_EmpType = `Spouse self-emp. or works for somebody`)
+dat <- rename(dat, Spouse_AvgHours = `No. of hrs spouse usually works a week`)
+dat <- rename(dat, Spouse_LWHours = `Number of hrs spouse worked last week`)
+dat <- rename(dat, Spouse_LaborStatus = `Spouse labor force status`)
+dat <- rename(dat, Div_Sep_Status = `Ever been divorced or separated`)
+dat <- rename(dat, Marital_Status = `Marital status`)
+dat <- rename(dat, R_EmpType = `R self-emp or works for somebody`)
+dat <- rename(dat, R_AvgHours = `Number of hours usually work a week`)
+dat <- rename(dat, R_LWHours = `Number of hours worked last week`)
+dat <- rename(dat, R_LaborStatus = `Labor force status`)
+dat <- rename(dat, R_ID = `Respondent id number`)
+dat <- rename(dat, Ballot_Type = `Ballot used for interview`)
+
+unique(dat$Year)
+dat <- filter(dat, Year != "NA")
+
+unique(dat$Happiness)
+dat <- filter(dat, Happiness != "No answer")
+dat <- filter(dat, Happiness != "Don't know")
+dat <- filter(dat, Happiness != "Not applicable")
+
+unique(dat$Politic_Party)
+dat <- filter(dat, Politic_Party != "No answer")
+dat <- filter(dat, Politic_Party != "Don't know")
+
+unique(dat$FamIncome)
+dat <- filter(dat, FamIncome != "No answer")
+dat <- filter(dat, FamIncome != "Not applicable")
+dat <- filter(dat, FamIncome != "Don't know")
+dat <- filter(dat, FamIncome != "Refused")
+
+unique(dat$Sex)
+
+unique(dat$School_Years)
+dat <- filter(dat, School_Years != "No answer")
+dat <- filter(dat, School_Years != "Don't know")
+
+unique(dat$Div_Sep_Status)
+dat <- filter(dat, Div_Sep_Status != "No answer")
+#dat <- filter(dat, Div_Sep_Status != "Not applicable")
+dat <- filter(dat, Div_Sep_Status != "Don't know")
+
+unique(dat$Marital_Status)
+
+unique(dat$R_EmpType)
+dat <- filter(dat, R_EmpType != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_EmpType != "Don't know")
+
+unique(dat$R_AvgHours)
+dat <- filter(dat, R_AvgHours != "No answer")
+#dat <- filter(dat, R_AvgHours != "Not applicable")
+dat <- filter(dat, R_AvgHours != "Don't know")
+
+unique(dat$R_LWHours)
+dat <- filter(dat, R_LWHours != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_LWHours != "Don't know")
+
+unique(dat$R_LaborStatus)
+
+unique(dat$Spouse_EmpType)
+dat <- filter(dat, Spouse_EmpType != "No answer")
+#dat <- filter(dat, Spouse_EmpType != "Not applicable")
+dat <- filter(dat, Spouse_EmpType != "Don't know")
+
+unique(dat$Spouse_AvgHours)
+dat <- filter(dat, Spouse_AvgHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_AvgHours != "Don't know")
+
+unique(dat$Spouse_LWHours)
+dat <- filter(dat, Spouse_LWHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_LWHours != "Don't know")
+
+unique(dat$Spouse_LaborStatus)
+
+#Finally Clean Data
+
+unique(dat$Year)
+dat1973 <- filter(dat, Year <= 1999)
+dat2000 <- filter(dat, Year > 1999)
+ggplot(dat1973, aes(x=Happiness, weight=length(Happiness), color=Happiness)) + geom_bar() + ggtitle("Barplot of Happiness from 1973 to 1999") + xlab("Happiness") + ylab("# of Recipients") 
+ggplot(dat2000, aes(x=Happiness, weight=length(Happiness), color=Happiness)) + geom_bar() + ggtitle("Barplot of Happiness from 2000 to 2018") + xlab("Happiness") + ylab("# of Recipients") 
+
+length(dat$Happiness)
+table(dat1973$Happiness)
+
+
+percNTH73 <- 3798 / 51243
+percPH73 <- 18100 / 51243
+percVH73 <- 10321 / 51243
+
+
+
+table(dat2000$Happiness)
+
+
+percNTH00 <- 2645 / 51243
+percPH00 <- 10793 / 51243
+percVH00 <- 5586 / 51243
+
+slices <- c(percNTH73, percPH73, percVH73, percNTH00, percPH00, percVH00)
+lbls <- c("Not Very Happy 73-99", "Pretty Happy 73-99", "Very Happy 73-99", "Not Very Happy 00-18", "Pretty Happy 00-18", "Very Happy 00-18")
+
+pie(slices, labels = lbls, main = "Pie Chart of Happy Ratings")
+
+numReps73 <- length(dat1973$Happiness)
+numReps00 <- length(dat2000$Happiness)
+
+percReps73 <- numReps73 / length(dat$Happiness)
+percReps00 <- numReps00 / length(dat$Happiness)
+
+slices2 <- c(percReps73, percReps00)
+lbls2 <- c("Recipients 73-99", "Recipients 00-18")
+
+pie(slices2, labels = lbls2, main = "Pie Chart of Total Recipients")
+```
+  WRITE PARAGRAPH HERE
+  
+  2. Is Happiness impacted by the recipient's type of employment?
+  
+  ```{r}
+  install.packages('readxl')
+library(dplyr)
+library(ggplot2)
+dat <- readxl::read_xls('Desktop/ds202_lab3/GSS.xls')
+
+names(dat)
+dat <- rename(dat, Year = `Gss year for this respondent`)
+dat <- rename(dat, Happiness = `General happiness`)
+dat <- rename(dat, Politic_Party = `Political party affiliation`)
+dat <- rename(dat, FamIncome = `Total family income` )
+dat <- rename(dat, Sex = `Respondents sex`)
+dat <- rename(dat, School_Years = `Highest year of school completed`)
+dat <- rename(dat, Spouse_EmpType = `Spouse self-emp. or works for somebody`)
+dat <- rename(dat, Spouse_AvgHours = `No. of hrs spouse usually works a week`)
+dat <- rename(dat, Spouse_LWHours = `Number of hrs spouse worked last week`)
+dat <- rename(dat, Spouse_LaborStatus = `Spouse labor force status`)
+dat <- rename(dat, Div_Sep_Status = `Ever been divorced or separated`)
+dat <- rename(dat, Marital_Status = `Marital status`)
+dat <- rename(dat, R_EmpType = `R self-emp or works for somebody`)
+dat <- rename(dat, R_AvgHours = `Number of hours usually work a week`)
+dat <- rename(dat, R_LWHours = `Number of hours worked last week`)
+dat <- rename(dat, R_LaborStatus = `Labor force status`)
+dat <- rename(dat, R_ID = `Respondent id number`)
+dat <- rename(dat, Ballot_Type = `Ballot used for interview`)
+
+unique(dat$Year)
+dat <- filter(dat, Year != "NA")
+
+unique(dat$Happiness)
+dat <- filter(dat, Happiness != "No answer")
+dat <- filter(dat, Happiness != "Don't know")
+dat <- filter(dat, Happiness != "Not applicable")
+
+unique(dat$Politic_Party)
+dat <- filter(dat, Politic_Party != "No answer")
+dat <- filter(dat, Politic_Party != "Don't know")
+
+unique(dat$FamIncome)
+dat <- filter(dat, FamIncome != "No answer")
+dat <- filter(dat, FamIncome != "Not applicable")
+dat <- filter(dat, FamIncome != "Don't know")
+dat <- filter(dat, FamIncome != "Refused")
+
+unique(dat$Sex)
+
+unique(dat$School_Years)
+dat <- filter(dat, School_Years != "No answer")
+dat <- filter(dat, School_Years != "Don't know")
+
+unique(dat$Div_Sep_Status)
+dat <- filter(dat, Div_Sep_Status != "No answer")
+#dat <- filter(dat, Div_Sep_Status != "Not applicable")
+dat <- filter(dat, Div_Sep_Status != "Don't know")
+
+unique(dat$Marital_Status)
+
+unique(dat$R_EmpType)
+dat <- filter(dat, R_EmpType != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_EmpType != "Don't know")
+
+unique(dat$R_AvgHours)
+dat <- filter(dat, R_AvgHours != "No answer")
+#dat <- filter(dat, R_AvgHours != "Not applicable")
+dat <- filter(dat, R_AvgHours != "Don't know")
+
+unique(dat$R_LWHours)
+dat <- filter(dat, R_LWHours != "No answer")
+#dat <- filter(dat, R_EmpType != "Not applicable")
+dat <- filter(dat, R_LWHours != "Don't know")
+
+unique(dat$R_LaborStatus)
+
+unique(dat$Spouse_EmpType)
+dat <- filter(dat, Spouse_EmpType != "No answer")
+#dat <- filter(dat, Spouse_EmpType != "Not applicable")
+dat <- filter(dat, Spouse_EmpType != "Don't know")
+
+unique(dat$Spouse_AvgHours)
+dat <- filter(dat, Spouse_AvgHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_AvgHours != "Don't know")
+
+unique(dat$Spouse_LWHours)
+dat <- filter(dat, Spouse_LWHours != "No answer")
+#dat <- filter(dat, Spouse_AvgHours != "Not applicable")
+dat <- filter(dat, Spouse_LWHours != "Don't know")
+
+unique(dat$Spouse_LaborStatus)
+
+#Finally Clean Data
+
+ggplot(dat, aes(x=Happiness, weight=length(Happiness), color=Happiness)) + geom_bar() + facet_wrap(~R_LaborStatus) + ggtitle("Happiness compared with Labor Status") + xlab("Happiness") + ylab("# of Recipients") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+table(dat$R_LaborStatus)
+
+percKH <- 7836 / length(dat$R_LaborStatus)
+percOTH <- 955 / length(dat$R_LaborStatus)
+percRET <- 6827 / length(dat$R_LaborStatus)
+percSCH <- 1530 / length(dat$R_LaborStatus)
+percTNW <- 1031 / length(dat$R_LaborStatus)
+percULOW <- 1701 / length(dat$R_LaborStatus)
+percWFT <- 26048 / length(dat$R_LaborStatus)
+percWPT <- 5315 / length(dat$R_LaborStatus)
+
+slices3 <- c(percKH, percOTH, percRET, percSCH, percTNW, percULOW, percWFT, percWPT)
+lbls3 <- c("Keeping House", "Other", "Retired", "School", "Temp Not Working", "Unempl, Laid Off", "Working Full Time", "Working Part Time")
+
+pie(slices3, labels = lbls3, main = "Total Recipients by Labor Status")
+```
+INSERT PARAGRAPH HERE
